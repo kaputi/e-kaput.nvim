@@ -1,4 +1,4 @@
-# lspkind-nvim
+# e-kaput.nvim
 
 This simple plugin sets Neovim builin LSP diagnostics on a small popup window when you hover on the line with the errors, the popup goes away when the cursor moves off the line.
 
