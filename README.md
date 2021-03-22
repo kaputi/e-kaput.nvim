@@ -4,7 +4,7 @@ This simple plugin sets Neovim builin LSP errors on a small popup window when yo
 
 ## Configuration
 
-![Screenshot](https://github.com/kaputi/e-kaput/raw/master/assets/screenshot.png "Screenshot1")
+![Screenshot](https://github.com/kaputi/e-kaput/raw/master/assets/screenshot1.png "Screenshot1")
 
 ### highlights
 
