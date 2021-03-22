@@ -9,7 +9,12 @@ utils.getErrors = function(diagnostics)
 
  local errors = {}
 	for key, value in ipairs(diagnostics) do
-	local errorMessage = severitySigns[value['severity']] .. ' ' .. value['message'] .. ' [' .. value['source'] .. ']'
+    local source = ''
+    if value['source'] ~= nil then
+      source = '[' .. value['source'] .. ']'
+    end
+
+	local errorMessage = severitySigns[value['severity']] .. ' ' .. value['message'] .. source
 		errors[key] = {message = errorMessage, severity = value['severity']}
 	end
  return errors
