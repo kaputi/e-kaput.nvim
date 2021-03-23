@@ -25,15 +25,38 @@ vim.g['ekaput_warning_sign'] = ''
 vim.g['ekaput_information_sign'] = ''
 vim.g['ekaput_hint_sign'] = ''
 ```
+
+### Transparency
+set the transparency of the floating window it can be a value between 0 for full transparency and 100 for no transparency.
+
+vimscript:
+```viml
+let g:ekaput_transparency = 25
+```
+lua:
+```lua
+vim.g['ekaput_transparency'] = 25
+```
 ### Highlights
 
 The highlights are linked to Lsp highlights, modify them to meet your needs.
 
+vimscript
 ```viml
 highlight link EKaputError LspDiagnosticsSignError
 highlight link EKaputWarning LspDiagnosticsSignWarning
 highlight link EKaputInformation LspDiagnosticsSignInformation
 highlight link EKaputHint LspDiagnosticsSignHint
+```
+
+lua
+```lua
+vim.cmd([[
+  highlight link EKaputError LspDiagnosticsSignError
+  highlight link EKaputWarning LspDiagnosticsSignWarning
+  highlight link EKaputInformation LspDiagnosticsSignInformation
+  highlight link EKaputHint LspDiagnosticsSignHint
+]])
 ```
 
 ### Disable virtual text diagnostics

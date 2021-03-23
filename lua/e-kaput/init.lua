@@ -1,7 +1,6 @@
 --[[
 TODO:
 	- line or word mode setting (if hover shows whole line error or just the range where the cursor is)
-	- float window styles: transparency, borders, background
 ]]
 
 local ekaput = {}
@@ -31,15 +30,15 @@ ekaput.openFloatingWindow = function()
 
 	  if hasDiagnostics then
 	    local errors = utils.getErrors(lineDiagnostics)
-	    -- print(vim.inspect(errors))
+	  --   -- print(vim.inspect(errors))
 
 	    local buf  = vim.api.nvim_create_buf(false,true)
 	    utils.populateBuffer(buf, errors)
 
 
 	    local errorsWidth = utils.longestErrorWidth(errors)
-            local fittedWidth = utils.checkWidth(errorsWidth)
-	    utils.createFloatingWindow(buf,#errors,fittedWidth)
+      local fittedWidth = utils.checkWidth(errorsWidth)
+	    utils.createFloatingWindow(buf,fittedWidth)
 
     end
   end

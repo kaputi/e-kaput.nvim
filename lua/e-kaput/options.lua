@@ -14,3 +14,7 @@
   if vim.g['ekaput_hint_sign'] == nil then
     vim.g['ekaput_hint_sign'] = ''
   end
+
+  if vim.g['ekaput_transparency'] == nil then
+    vim.g['ekaput_transparency'] = 25
+  end
