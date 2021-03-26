@@ -30,4 +30,6 @@ augroup EkaputAutocommands
   autocmd!
   autocmd CursorHold * call EKaputOpen()
   autocmd CursorMoved * call EKaputClose()
+  autocmd InsertEnter * call EKaputClose()
+  autocmd VimLeavePre * call EKaputClose()
 augroup END
