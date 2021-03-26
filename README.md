@@ -2,6 +2,8 @@
 
 This simple plugin sets Neovim builin LSP diagnostics on a small popup window when you hover on the line with the errors, the popup goes away when the cursor moves off the line.
 
+You can add borders, change background and use diferent signs, and diferent colors for each type of diagnostics.
+
 ![Screenshot](https://github.com/kaputi/e-kaput/raw/master/assets/screenshot1.png "Screenshot1")
 ![Screenshot](https://github.com/kaputi/e-kaput/raw/master/assets/screenshot2.png "Screenshot1")
 ![Screenshot](https://github.com/kaputi/e-kaput/raw/master/assets/screenshot3.png "Screenshot1")
@@ -26,6 +28,18 @@ vim.g['ekaput_information_sign'] = ''
 vim.g['ekaput_hint_sign'] = ''
 ```
 
+### Borders
+You can turn on and of borders changing this
+
+vimscript:
+```viml
+let g:ekaput_borders = 1
+```
+lua:
+```lua
+vim.g['ekaput_borders'] = 1
+```
+
 ### Transparency
 set the transparency of the floating window it can be a value between 0 for full transparency and 100 for no transparency.
 
@@ -47,6 +61,8 @@ highlight link EKaputError LspDiagnosticsSignError
 highlight link EKaputWarning LspDiagnosticsSignWarning
 highlight link EKaputInformation LspDiagnosticsSignInformation
 highlight link EKaputHint LspDiagnosticsSignHint
+highlight link EKaputBorder LspDiagnosticsSignInformation
+highlight link EKaputBackground NormalFloat
 ```
 
 lua
@@ -56,6 +72,8 @@ vim.cmd([[
   highlight link EKaputWarning LspDiagnosticsSignWarning
   highlight link EKaputInformation LspDiagnosticsSignInformation
   highlight link EKaputHint LspDiagnosticsSignHint
+  highlight link EKaputBorder LspDiagnosticsSignInformation
+  highlight link EKaputBackground NormalFloat
 ]])
 ```
 

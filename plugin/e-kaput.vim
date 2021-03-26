@@ -9,6 +9,8 @@ highlight default link EKaputError LspDiagnosticsSignError
 highlight default link EKaputWarning LspDiagnosticsSignWarning
 highlight default link EKaputInformation LspDiagnosticsSignInformation
 highlight default link EKaputHint LspDiagnosticsSignHint
+highlight default link EKaputBorder LspDiagnosticsSignInformation
+highlight default link EkaputBackground NormalFloat
 
 function! EKaputOpen()
   "TODO: Dont forget to remove this on
@@ -24,7 +26,7 @@ function! EKaputClose()
   lua require("e-kaput").closeFloatingWindow()
 endfun
 
-augroup LuaPluginAutogroup
+augroup EkaputAutocommands
   autocmd!
   autocmd CursorHold * call EKaputOpen()
   autocmd CursorMoved * call EKaputClose()
