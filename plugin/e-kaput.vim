@@ -26,6 +26,16 @@ function! EKaputClose()
   lua require("e-kaput").closeFloatingWindow()
 endfun
 
+
+function! EKaputToggle()
+  " TODO: Dont forget to remove this
+  " this reloads lua files when changed
+  " lua for k in pairs(package.loaded) do if k:match("^e-kaput") then package.loaded[k] = nil end end
+  lua require("e-kaput").toggle()
+endfun
+
+command! EKaputToggle call EKaputToggle()
+
 augroup EkaputAutocommands
   autocmd!
   autocmd CursorHold * call EKaputOpen()

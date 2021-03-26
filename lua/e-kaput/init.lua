@@ -18,6 +18,7 @@ require('e-kaput.options')
 local utils = require('e-kaput.utils')
 
 ekaput.openFloatingWindow = function()
+  if vim.g.ekaput_enabled ~= 1 then return end
   if vim.g.ekaput_float_open == 0 then
     local lineDiagnostics = vim.lsp.diagnostic.get_line_diagnostics()
 
@@ -47,6 +48,7 @@ ekaput.openFloatingWindow = function()
 end
 
 ekaput.closeFloatingWindow = function()
+  if vim.g.ekaput_enabled ~= 1 then return end
   if vim.g.ekaput_float_open == 1 then
     vim.api.nvim_win_close(vim.g.ekaput_error_win, true)
     vim.api.nvim_buf_delete(vim.g.ekaput_error_buf, {force = true})
@@ -55,6 +57,15 @@ ekaput.closeFloatingWindow = function()
       vim.api.nvim_buf_delete(vim.g.ekaput_border_buf, {force = true})
     end
     vim.g.ekaput_float_open = 0
+  end
+end
+
+ekaput.toggle = function()
+  ekaput.closeFloatingWindow()
+  if vim.g.ekaput_enabled == 0 then
+    vim.g.ekaput_enabled = 1
+  elseif vim.g.ekaput_enabled == 1 then
+    vim.g.ekaput_enabled = 0
   end
 end
 

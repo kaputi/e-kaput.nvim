@@ -8,7 +8,21 @@ You can add borders, change background and use diferent signs, and diferent colo
 ![Screenshot](https://github.com/kaputi/e-kaput/raw/master/assets/screenshot2.png "Screenshot1")
 ![Screenshot](https://github.com/kaputi/e-kaput/raw/master/assets/screenshot3.png "Screenshot1")
 
+## Commands
+- EKaputToggle
+
 ## Configuration
+### Enable
+Ekaput is enabled by default change this to disable it
+
+vimscript:
+```viml
+leg g:ekaput_enabled = 1
+```
+lua:
+```lua
+vim.g['ekaput_enabled'] = 1
+```
 
 ### Signs
 You can modify the sign for each type of diagnostic
