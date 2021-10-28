@@ -34,12 +34,12 @@ ekaput.openFloatingWindow = function()
       vim.g.ekaput_error_win = errorWindow
       vim.g.ekaput_error_buf = errorBuffer
 
-      if vim.g.ekaput_borders == 1 then
-        local borderBuffer = utils.borderBuffer(errorBuffer)
-        local borderWindow = utils.createBorderWindow(borderBuffer)
-        vim.g.ekaput_border_win = borderWindow
-        vim.g.ekaput_border_buf = borderBuffer
-      end
+      -- if vim.g.ekaput_borders == 1 then
+      --   local borderBuffer = utils.borderBuffer(errorBuffer)
+      --   local borderWindow = utils.createBorderWindow(borderBuffer)
+      --   vim.g.ekaput_border_win = borderWindow
+      --   vim.g.ekaput_border_buf = borderBuffer
+      -- end
 
       vim.g.ekaput_float_open = 1
     end
