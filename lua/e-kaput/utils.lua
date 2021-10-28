@@ -130,8 +130,9 @@ utils.createErrorWindow = function(buf)
     style = 'minimal',
     border = {
       {'╭', 'EKaputBorder'}, {'─', 'EKaputBorder'}, {'╮', 'EKaputBorder'},
-      {'', 'EKaputBorder'}, {'│', 'EKaputBorder'}, {'╯', 'EKaputBorder'},
+      {'│', 'EKaputBorder'}, {'╯', 'EKaputBorder'}, {'─' , 'EKputBorder'},
       {'╰', 'EKaputBorder'}, {'│', 'EKaputBorder'}
+
     }
   }
 
