@@ -127,7 +127,8 @@ utils.createErrorWindow = function(buf)
     height = api.nvim_buf_line_count(buf),
     width = bufWidth,
     focusable = false,
-    style = 'minimal'
+    style = 'minimal',
+    border = 'rounded'
   }
 
   local window = api.nvim_open_win(buf, false, config)
