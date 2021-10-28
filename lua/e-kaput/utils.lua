@@ -113,10 +113,17 @@ utils.createErrorWindow = function(buf)
 
   local row = 0
   local col = 1
+  local border = 'none'
 
   if vim.g.ekaput_borders then
     row = -1
     col = 2
+    border = {
+      {'╭', 'EKaputBorder'}, {'─', 'EKaputBorder'}, {'╮', 'EKaputBorder'},
+      {'│', 'EKaputBorder'}, {'╯', 'EKaputBorder'}, {'─', 'EKaputBorder'},
+      {'╰', 'EKaputBorder'}, {'│', 'EKaputBorder'}
+    }
+
   end
 
   local config = {
@@ -128,12 +135,7 @@ utils.createErrorWindow = function(buf)
     width = bufWidth,
     focusable = false,
     style = 'minimal',
-    border = {
-      {'╭', 'EKaputBorder'}, {'─', 'EKaputBorder'}, {'╮', 'EKaputBorder'},
-      {'│', 'EKaputBorder'}, {'╯', 'EKaputBorder'}, {'─' , 'EKputBorder'},
-      {'╰', 'EKaputBorder'}, {'│', 'EKaputBorder'}
-
-    }
+    border = border
   }
 
   local window = api.nvim_open_win(buf, false, config)
@@ -142,71 +144,5 @@ utils.createErrorWindow = function(buf)
 
   return window
 end
-
--- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
--- create border buffer
-
--- utils.borderBuffer = function(errorBuffer)
---   local buf = api.nvim_create_buf(false, true)
-
---   local width = bufferWidth(errorBuffer) + 2
---   local height = api.nvim_buf_line_count(errorBuffer) + 2
-
---   local topborder = "╭"
---   local bottomborder = "╰"
---   local middleborder = "│"
-
---   for _ = 1, width - 2, 1 do
---     topborder = topborder .. "─"
---     bottomborder = bottomborder .. "─"
---     middleborder = middleborder .. " "
---   end
---   topborder = topborder .. "╮"
---   bottomborder = bottomborder .. "╯"
---   middleborder = middleborder .. "│"
-
---   api.nvim_buf_set_lines(buf, 0, -1, false, {topborder})
---   api.nvim_buf_add_highlight(buf, ns_errors, 'EKaputBorder', 0, 1, #topborder)
-
---   for i = 1, height - 2, 1 do
---     api.nvim_buf_set_lines(buf, i, -1, false, {middleborder})
---     api.nvim_buf_add_highlight(buf, ns_errors, 'EKaputBorder', i, 1,
---         #middleborder)
---   end
---   local line_count = api.nvim_buf_line_count(buf)
-
---   api.nvim_buf_set_lines(buf, line_count, -1, false, {bottomborder})
---   api.nvim_buf_add_highlight(buf, ns_errors, 'EKaputBorder', line_count, 1,
---       #bottomborder)
-
---   return buf
--- end
-
--- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
--- -- create border window
--- utils.createBorderWindow = function(buf)
-
---   -- the characters used for the middle borders count as 2 each
---   local lines = api.nvim_buf_get_lines(buf, 1, 2, true)
---   local width = #lines[1] - 4
-
---   local config = {
---     relative = 'cursor',
---     anchor = 'SW',
---     row = 0,
---     col = 1,
---     height = vim.api.nvim_buf_line_count(buf),
---     width = width,
---     focusable = false,
---     style = 'minimal'
---   }
-
---   local window = api.nvim_open_win(buf, false, config)
---   vim.api.nvim_win_set_option(window, 'winblend', vim.g.ekaput_transparency)
---   vim.api.nvim_win_set_option(window, 'winhl', 'NormalFloat:EKaputBackground')
-
---   return window
-
--- end
 
 return utils

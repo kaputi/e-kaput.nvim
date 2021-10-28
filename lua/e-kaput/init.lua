@@ -52,10 +52,10 @@ ekaput.closeFloatingWindow = function()
   if vim.g.ekaput_float_open == 1 then
     vim.api.nvim_win_close(vim.g.ekaput_error_win, true)
     vim.api.nvim_buf_delete(vim.g.ekaput_error_buf, {force = true})
-    if vim.g.ekaput_borders == 1 then
-      vim.api.nvim_win_close(vim.g.ekaput_border_win, true)
-      vim.api.nvim_buf_delete(vim.g.ekaput_border_buf, {force = true})
-    end
+    -- if vim.g.ekaput_borders == 1 then
+    --   vim.api.nvim_win_close(vim.g.ekaput_border_win, true)
+    --   vim.api.nvim_buf_delete(vim.g.ekaput_border_buf, {force = true})
+    -- end
     vim.g.ekaput_float_open = 0
   end
 end
