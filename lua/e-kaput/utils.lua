@@ -115,7 +115,7 @@ utils.createErrorWindow = function(buf)
   local col = 1
   local border = 'none'
 
-  if vim.g.ekaput_borders then
+  if vim.g.ekaput_borders == 1 then
     row = -1
     col = 2
     border = {
