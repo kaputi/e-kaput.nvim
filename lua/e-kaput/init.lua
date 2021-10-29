@@ -1,6 +1,9 @@
 --[[
 TODO:
 	- line or word mode setting (if hover shows whole line error or just the range where the cursor is)
+  - Better border options
+  - docs
+  - refresh on lspdiagnostics(when formatter changes something it still shows until cursor moved)
 ]] local ekaput = {}
 
 ---@brief [[
@@ -13,59 +16,121 @@ TODO:
 
 ---@tag e-kaput.nvim
 
-require('e-kaput.options')
-
 local utils = require('e-kaput.utils')
 
+local config = {}
+local defaults = require('e-kaput.config')
+
+local float_open = 0
+local window, buffer
+
+-- if any vim variable is set change vehabiour without restart
+local vim_vs_lua = function()
+  if vim.g.e_kaput_enabled ~= nil then
+    if vim.g.e_kaput_enabled == 1 then
+      config.enabled = true
+    else
+      config.enabled = false
+    end
+  end
+
+  if vim.g.e_kaput_error_sign ~= nil then
+    config.error_sign = vim.g.e_kaput_error_sign
+  end
+
+  if vim.g.e_kaput_warning_sign ~= nil then
+    config.warning_sign = vim.g.e_kaput_warning_sign
+  end
+
+  if vim.g.e_kaput_information_sign ~= nil then
+    config.information_sign = vim.g.e_kaput_information_sign
+  end
+
+  if vim.g.e_kaput_hint_sign ~= nil then
+    config.hint_sign = vim.g.e_kaput_hint_sign
+  end
+
+  if vim.g.e_kaput_borders ~= nil then
+    if vim.g.e_kaput_borders == 1 then
+      config.borders = true
+    else
+      config.borders = false
+
+    end
+  end
+
+  if vim.g.e_kaput_transparency ~= nil then
+    config.transparency = vim.g.e_kaput_transparency
+  end
+end
+
+ekaput.setup = function(values)
+  utils.highlights()
+  utils.commands()
+
+  setmetatable(config, {__index = vim.tbl_extend('force', defaults, values)})
+
+  -- Check if settings are set in vimscript
+  vim_vs_lua()
+end
+
 ekaput.openFloatingWindow = function()
-  if vim.g.ekaput_enabled ~= 1 then return end
-  if vim.g.ekaput_float_open == 0 then
+  vim_vs_lua()
+  if config.enabled == nil or config.enabled == false then return end
+
+  if float_open == 0 then
     local lineDiagnostics = vim.lsp.diagnostic.get_line_diagnostics()
 
     local hasDiagnostics = not utils.tableIsEmpty(lineDiagnostics)
 
     if hasDiagnostics then
-      local errors = utils.formatErrors(lineDiagnostics)
+      local errors = utils.formatErrors(lineDiagnostics, config)
 
       local errorBuffer = utils.errorBuffer(errors)
 
-      local errorWindow = utils.createErrorWindow(errorBuffer)
+      local errorWindow = utils.createErrorWindow(errorBuffer, config)
 
-      vim.g.ekaput_error_win = errorWindow
-      vim.g.ekaput_error_buf = errorBuffer
+      window = errorWindow
+      buffer = errorBuffer
 
-      -- if vim.g.ekaput_borders == 1 then
-      --   local borderBuffer = utils.borderBuffer(errorBuffer)
-      --   local borderWindow = utils.createBorderWindow(borderBuffer)
-      --   vim.g.ekaput_border_win = borderWindow
-      --   vim.g.ekaput_border_buf = borderBuffer
-      -- end
-
-      vim.g.ekaput_float_open = 1
+      float_open = 1
     end
   end
 
 end
 
 ekaput.closeFloatingWindow = function()
-  if vim.g.ekaput_enabled ~= 1 then return end
-  if vim.g.ekaput_float_open == 1 then
-    vim.api.nvim_win_close(vim.g.ekaput_error_win, true)
-    vim.api.nvim_buf_delete(vim.g.ekaput_error_buf, {force = true})
-    -- if vim.g.ekaput_borders == 1 then
-    --   vim.api.nvim_win_close(vim.g.ekaput_border_win, true)
-    --   vim.api.nvim_buf_delete(vim.g.ekaput_border_buf, {force = true})
-    -- end
-    vim.g.ekaput_float_open = 0
+  -- vim_vs_lua()
+  -- if config.enabled == nil or config.enabled == false then return end
+  if float_open == 1 then
+    vim.api.nvim_win_close(window, true)
+    vim.api.nvim_buf_delete(buffer, {force = true})
+    float_open = 0
   end
 end
 
 ekaput.toggle = function()
   ekaput.closeFloatingWindow()
-  if vim.g.ekaput_enabled == 0 then
-    vim.g.ekaput_enabled = 1
-  elseif vim.g.ekaput_enabled == 1 then
-    vim.g.ekaput_enabled = 0
+  if vim.g.e_kaput_enabled ~= nil then
+    if vim.g.ekaput_enabled == false then
+      vim.g.ekaput_enabled = true
+    elseif vim.g.ekaput_enabled == true then
+      vim.g.ekaput_enabled = false
+    else
+      vim.g.e_kaput_enabled = false
+    end
+  else
+    if config.enabled ~= nil then
+      if config.enabled == true then
+        config.enabled = false
+      elseif config.enabled == false then
+        config.enabled = true
+      else
+        config.enabled = false
+      end
+    else
+      config.enabled = false
+    end
   end
 end
 

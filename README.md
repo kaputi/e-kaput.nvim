@@ -12,72 +12,50 @@ You can add borders, change background and use diferent signs, and diferent colo
 - EKaputToggle
 
 ## Configuration
-### Enable
+### Minimal config
+Load EKaput with defaults
+
+lua:
+```lua
+require('e-kaput').setup({})
+```
+vimscript:
+```viml
+lua require('e-kaput').setup({})
+```
+
+### Advanced Config
 Ekaput is enabled by default change this to disable it
 
-vimscript:
-```viml
-leg g:ekaput_enabled = 1
-```
 lua:
 ```lua
-vim.g['ekaput_enabled'] = 1
+require('e-kaput').setup({
+ -- defaults
+  enabled = true, -- true | false,  Enable EKaput.
+  transparency = 25, -- 0 - 100 , transparecy percentage.
+  borders = true, -- true | false, Borders.
+  error_sign = '', -- Error sign.
+  warning_sign = '', -- Warning sign.
+  information_sign = '', -- Information sign.
+  hint_sign = '' -- Hint sign.
+})
 ```
-
-### Signs
-You can modify the sign for each type of diagnostic
-
-vimscript:
+vimscript: if set it will override anything passed to the setup in lua
 ```viml
-let g:ekaput_error_sign = ''
-let g:ekaput_warning_sign = ''
-let g:ekaput_information_sign = ''
-let g:ekaput_hint_sign = ''
-```
-lua:
-```lua
-vim.g['ekaput_error_sign'] = ''
-vim.g['ekaput_warning_sign'] = ''
-vim.g['ekaput_information_sign'] = ''
-vim.g['ekaput_hint_sign'] = ''
+" defaults
+let e_kaput_enabled = 1
+let e_kaput_transparency = 25
+let e_kaput_borders = 1
+let e_kaput_borders = 1
+let e_kaput_error_sign = ''
+let e_kaput_warning_sign = ''
+let e_kaput_information_sign = ''
+let e_kaput_hint_sign = ''
 ```
 
-### Borders
-You can turn on and of borders changing this
-
-vimscript:
-```viml
-let g:ekaput_borders = 1
-```
-lua:
-```lua
-vim.g['ekaput_borders'] = 1
-```
-
-### Transparency
-set the transparency of the floating window it can be a value between 0 for full transparency and 100 for no transparency.
-
-vimscript:
-```viml
-let g:ekaput_transparency = 25
-```
-lua:
-```lua
-vim.g['ekaput_transparency'] = 25
-```
 ### Highlights
 
 The highlights are linked to Lsp highlights, modify them to meet your needs.
-
-vimscript
-```viml
-highlight link EKaputError LspDiagnosticsSignError
-highlight link EKaputWarning LspDiagnosticsSignWarning
-highlight link EKaputInformation LspDiagnosticsSignInformation
-highlight link EKaputHint LspDiagnosticsSignHint
-highlight link EKaputBorder LspDiagnosticsSignInformation
-highlight link EKaputBackground NormalFloat
-```
 
 lua
 ```lua
@@ -90,6 +68,17 @@ vim.cmd([[
   highlight link EKaputBackground NormalFloat
 ]])
 ```
+
+vimscript
+```viml
+highlight link EKaputError LspDiagnosticsSignError
+highlight link EKaputWarning LspDiagnosticsSignWarning
+highlight link EKaputInformation LspDiagnosticsSignInformation
+highlight link EKaputHint LspDiagnosticsSignHint
+highlight link EKaputBorder LspDiagnosticsSignInformation
+highlight link EKaputBackground NormalFloat
+```
+
 
 ### Disable virtual text diagnostics
 If you're like me, the virtual text diagnostics feel crowded, and are a distraction.

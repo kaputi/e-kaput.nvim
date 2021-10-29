@@ -40,12 +40,12 @@ end
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- Get formated errors
 
-utils.formatErrors = function(diagnostics)
+utils.formatErrors = function(diagnostics, config)
   local severitySigns = {}
-  severitySigns[1] = vim.g.ekaput_error_sign
-  severitySigns[2] = vim.g.ekaput_warning_sign
-  severitySigns[3] = vim.g.ekaput_information_sign
-  severitySigns[4] = vim.g.ekaput_hint_sign
+  severitySigns[1] = config.error_sign
+  severitySigns[2] = config.warning_sign
+  severitySigns[3] = config.information_sign
+  severitySigns[4] = config.hint_sign
 
   local errors = {}
   for key, value in ipairs(diagnostics) do
@@ -107,17 +107,16 @@ end
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- Create error window
 
-utils.createErrorWindow = function(buf)
+utils.createErrorWindow = function(buf, config)
 
   local bufWidth = bufferWidth(buf)
 
   local row = 0
-  local col = 1
+  local col = 2
   local border = 'none'
 
-  if vim.g.ekaput_borders == 1 then
+  if config.borders == true then
     row = -1
-    col = 2
     border = {
       {'╭', 'EKaputBorder'}, {'─', 'EKaputBorder'}, {'╮', 'EKaputBorder'},
       {'│', 'EKaputBorder'}, {'╯', 'EKaputBorder'}, {'─', 'EKaputBorder'},
@@ -126,7 +125,7 @@ utils.createErrorWindow = function(buf)
 
   end
 
-  local config = {
+  local window_config = {
     relative = 'cursor',
     anchor = 'SW',
     row = row,
@@ -138,11 +137,36 @@ utils.createErrorWindow = function(buf)
     border = border
   }
 
-  local window = api.nvim_open_win(buf, false, config)
-  vim.api.nvim_win_set_option(window, 'winblend', vim.g.ekaput_transparency)
+  local window = api.nvim_open_win(buf, false, window_config)
+  vim.api.nvim_win_set_option(window, 'winblend', config.transparency)
   vim.api.nvim_win_set_option(window, 'winhl', 'NormalFloat:EKaputBackground')
 
   return window
+end
+
+utils.highlights = function()
+  vim.cmd([[
+    highlight default link EKaputError LspDiagnosticsSignError
+    highlight default link EKaputWarning LspDiagnosticsSignWarning
+    highlight default link EKaputInformation LspDiagnosticsSignInformation
+    highlight default link EKaputHint LspDiagnosticsSignHint
+    highlight default link EKaputBorder LspDiagnosticsSignInformation
+    highlight default link EkaputBackground NormalFloat
+  ]])
+end
+
+utils.commands = function()
+  vim.cmd([[
+    command! EKaputToggle lua require('e-kaput').toggle()
+
+    augroup EkaputAutocommands
+      autocmd!
+      autocmd CursorHold * lua require('e-kaput').openFloatingWindow()
+      autocmd CursorMoved * lua require('e-kaput').closeFloatingWindow()
+      autocmd InsertEnter * lua require('e-kaput').closeFloatingWindow()
+      autocmd VimLeavePre * lua require('e-kaput').closeFloatingWindow()
+    augroup END
+  ]])
 end
 
 return utils
