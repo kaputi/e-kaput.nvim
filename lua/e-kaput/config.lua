@@ -5,9 +5,9 @@ local config = {
   hint_sign = '',
   transparency = 25,
   borders = true,
-  enabled = true
+  enabled = true,
 }
 
-setmetatable(config, {__index = config.defaults})
+setmetatable(config, { __index = config.defaults })
 
 return config

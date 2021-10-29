@@ -6,9 +6,11 @@ local utils = {}
 -- local functions
 
 local break_lines = function(inputstr, sep)
-  if sep == nil then sep = "%s" end
+  if sep == nil then
+    sep = '%s'
+  end
   local t = {}
-  for str in string.gmatch(inputstr, "([^" .. sep .. "]+)") do
+  for str in string.gmatch(inputstr, '([^' .. sep .. ']+)') do
     for cleanstr in string.gmatch(str, '%S[%S%s]+') do
       table.insert(t, cleanstr)
     end
@@ -17,12 +19,20 @@ local break_lines = function(inputstr, sep)
 end
 
 local bufferWidth = function(buf)
-  local lines = api.nvim_buf_get_lines(buf, 0, api.nvim_buf_line_count(buf),
-      true)
+  local lines = api.nvim_buf_get_lines(
+    buf,
+    0,
+    api.nvim_buf_line_count(buf),
+    true
+  )
 
   local width = 0
 
-  for _, value in pairs(lines) do if #value > width then width = #value end end
+  for _, value in pairs(lines) do
+    if #value > width then
+      width = #value
+    end
+  end
 
   return width
 end
@@ -33,7 +43,9 @@ end
 local next = next
 
 utils.tableIsEmpty = function(table)
-  if next(table) == nil then return true end
+  if next(table) == nil then
+    return true
+  end
   return false
 end
 
@@ -50,27 +62,33 @@ utils.formatErrors = function(diagnostics, config)
   local errors = {}
   for key, value in ipairs(diagnostics) do
     local source = ''
-    if value['source'] ~= nil then source = '[' .. value['source'] .. ']' end
+    if value['source'] ~= nil then
+      source = '[' .. value['source'] .. ']'
+    end
 
     local error = break_lines(value['message'], '\n')
-    if type(error) == "table" then
+    if type(error) == 'table' then
       for multiKey, multiValue in ipairs(error) do
         local errorMessage = ' '
         if multiKey == 1 then
           errorMessage = severitySigns[value['severity']] .. ' '
         end
         errorMessage = errorMessage .. multiValue
-        if multiKey == #error then errorMessage = errorMessage .. source end
-        table.insert(errors,
-            {message = errorMessage, severity = value['severity']})
+        if multiKey == #error then
+          errorMessage = errorMessage .. source
+        end
+        table.insert(
+          errors,
+          { message = errorMessage, severity = value['severity'] }
+        )
       end
-
-    elseif type(error) == "string" then
-      local errorMessage = severitySigns[value['severity']] .. ' ' .. error ..
-                               source
-      errors[key] = {message = errorMessage, severity = value['severity']}
+    elseif type(error) == 'string' then
+      local errorMessage = severitySigns[value['severity']]
+        .. ' '
+        .. error
+        .. source
+      errors[key] = { message = errorMessage, severity = value['severity'] }
     end
-
   end
   return errors
 end
@@ -91,15 +109,19 @@ utils.errorBuffer = function(errors)
   severityHighlight[4] = 'EKaputHint'
 
   for key, value in ipairs(errors) do
-
     local message = value['message']
 
     local line = key - 1
-    api.nvim_buf_set_lines(buf, line, -1, false, {message})
+    api.nvim_buf_set_lines(buf, line, -1, false, { message })
 
-    api.nvim_buf_add_highlight(buf, ns_errors,
-        severityHighlight[value['severity']], line, 1, #message)
-
+    api.nvim_buf_add_highlight(
+      buf,
+      ns_errors,
+      severityHighlight[value['severity']],
+      line,
+      1,
+      #message
+    )
   end
   return buf
 end
@@ -108,7 +130,6 @@ end
 -- Create error window
 
 utils.createErrorWindow = function(buf, config)
-
   local bufWidth = bufferWidth(buf)
 
   local row = 0
@@ -118,11 +139,15 @@ utils.createErrorWindow = function(buf, config)
   if config.borders == true then
     row = -1
     border = {
-      {'╭', 'EKaputBorder'}, {'─', 'EKaputBorder'}, {'╮', 'EKaputBorder'},
-      {'│', 'EKaputBorder'}, {'╯', 'EKaputBorder'}, {'─', 'EKaputBorder'},
-      {'╰', 'EKaputBorder'}, {'│', 'EKaputBorder'}
+      { '╭', 'EKaputBorder' },
+      { '─', 'EKaputBorder' },
+      { '╮', 'EKaputBorder' },
+      { '│', 'EKaputBorder' },
+      { '╯', 'EKaputBorder' },
+      { '─', 'EKaputBorder' },
+      { '╰', 'EKaputBorder' },
+      { '│', 'EKaputBorder' },
     }
-
   end
 
   local window_config = {
@@ -134,7 +159,7 @@ utils.createErrorWindow = function(buf, config)
     width = bufWidth,
     focusable = false,
     style = 'minimal',
-    border = border
+    border = border,
   }
 
   local window = api.nvim_open_win(buf, false, window_config)

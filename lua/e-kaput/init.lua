@@ -4,7 +4,8 @@ TODO:
   - Better border options
   - docs
   - refresh on lspdiagnostics(when formatter changes something it still shows until cursor moved)
-]] local ekaput = {}
+]]
+local ekaput = {}
 
 ---@brief [[
 --- float window with neovim builtin lsp errors on hover
@@ -55,7 +56,6 @@ local vim_vs_lua = function()
       config.borders = true
     else
       config.borders = false
-
     end
   end
 
@@ -68,7 +68,7 @@ ekaput.setup = function(values)
   utils.highlights()
   utils.commands()
 
-  setmetatable(config, {__index = vim.tbl_extend('force', defaults, values)})
+  setmetatable(config, { __index = vim.tbl_extend('force', defaults, values) })
 
   -- Check if settings are set in vimscript
   vim_vs_lua()
@@ -76,7 +76,9 @@ end
 
 ekaput.openFloatingWindow = function()
   vim_vs_lua()
-  if config.enabled == nil or config.enabled == false then return end
+  if config.enabled == nil or config.enabled == false then
+    return
+  end
 
   if float_open == 0 then
     local lineDiagnostics = vim.lsp.diagnostic.get_line_diagnostics()
@@ -96,7 +98,6 @@ ekaput.openFloatingWindow = function()
       float_open = 1
     end
   end
-
 end
 
 ekaput.closeFloatingWindow = function()
@@ -104,7 +105,7 @@ ekaput.closeFloatingWindow = function()
   -- if config.enabled == nil or config.enabled == false then return end
   if float_open == 1 then
     vim.api.nvim_win_close(window, true)
-    vim.api.nvim_buf_delete(buffer, {force = true})
+    vim.api.nvim_buf_delete(buffer, { force = true })
     float_open = 0
   end
 end
